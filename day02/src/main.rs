@@ -197,6 +197,7 @@ fn main() {
     let games: Vec<Game> = parse_games(input);
     let mut impossible_sum: u32 = 0;
     let mut possible_sum: u32 = 0;
+    let mut power_sum: u64 = 0;
 
     for game in games.iter() {
         //print_game(game);
@@ -206,14 +207,17 @@ fn main() {
         let green = get_color_count(&max_cubes, "green".to_string());
 
         if (red > lim_red) | (blue > lim_blue) | (green > lim_green) {
-            println!("Impossible at {}", game.index);
             impossible_sum += game.index;
         } else {
             possible_sum += game.index;
         }
+        let power = red * blue * green;
+        power_sum += power as u64;
     }
+
     println!("Impossible sum: {}", impossible_sum);
     println!("Possible sum: {}", possible_sum);
+    println!("Power sum: {}", power_sum);
 
 
 }
