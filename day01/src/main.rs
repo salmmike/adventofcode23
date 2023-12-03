@@ -43,9 +43,7 @@ fn get_digits(str: &String) -> Vec<u8> {
 
     for (i, c) in str.chars().enumerate() {
         if (c >= '0') & (c <= '9') {
-            retval.push(
-                c.to_digit(RADIX).unwrap() as u8
-            );
+            retval.push(c.to_digit(RADIX).unwrap() as u8);
         } else {
             let val: Option<u8> = string_to_num(&str.as_bytes()[i..]);
             if val.is_some() {
@@ -60,7 +58,7 @@ fn join_first_and_last(values: &Vec<u8>) -> u32 {
     if values.is_empty() {
         return 0;
     }
-    (values[0] as u32) * 10 + values[values.len() -1] as u32
+    (values[0] as u32) * 10 + values[values.len() - 1] as u32
 }
 
 /// Read file filename into a vector, with each line as on element.
@@ -77,7 +75,6 @@ fn parse_inputfile(filename: &String) -> Vec<String> {
 }
 
 fn get_filename() -> String {
-
     for (i, arg) in env::args().enumerate() {
         if i == 1 {
             return arg.to_string();

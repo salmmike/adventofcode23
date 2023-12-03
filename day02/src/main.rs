@@ -1,13 +1,11 @@
-
+use std::collections::HashMap;
 use std::env;
 use std::fs::read_to_string;
-use std::ops::Deref;
 use std::option::Option;
-use std::collections::HashMap;
 
 struct Game {
     cube_sets: Vec<HashMap<String, u32>>,
-    index: u32
+    index: u32,
 }
 
 /// Read file filename into a vector, with each line as on element.
@@ -34,22 +32,19 @@ fn get_filename() -> String {
 
 /// Get index of the game
 fn parse_index(input: &String) -> Option<u32> {
-    if ! input.starts_with("Game ") {
-        return  None;
+    if !input.starts_with("Game ") {
+        return None;
     }
 
     let end: Option<usize> = input.find(':');
     if end.is_some() {
         let indexstr = &input[5..end.unwrap()].to_string();
 
-        return Some(
-            indexstr.to_string().parse().unwrap()
-        );
+        return Some(indexstr.to_string().parse().unwrap());
     }
 
     None
 }
-
 
 fn get_next_or_end(input: &String, limiter: char) -> usize {
     let limiter_index: Option<usize> = input.find(limiter);
@@ -99,7 +94,7 @@ fn parse_sets(input: &String) -> Option<Vec<HashMap<String, u32>>> {
 
     while start_index < input.len() {
         end_index += get_next_or_end(&input[start_index..].to_string(), ';') + 1;
-        res.push(parse_set(&input[start_index+1..end_index].to_string()));
+        res.push(parse_set(&input[start_index + 1..end_index].to_string()));
         start_index = end_index + 1;
     }
 
@@ -110,12 +105,10 @@ fn parse_game(input: &String) -> Option<Game> {
     let index = parse_index(input);
     let cube_sets = parse_sets(input);
 
-    Some(
-        Game {
-            cube_sets: cube_sets.unwrap(),
-            index: index.unwrap()
+    Some(Game {
+        cube_sets: cube_sets.unwrap(),
+        index: index.unwrap(),
     })
-
 }
 
 fn parse_games(input: Vec<String>) -> Vec<Game> {
@@ -125,7 +118,6 @@ fn parse_games(input: Vec<String>) -> Vec<Game> {
         if parsed.is_some() {
             res.push(parsed.unwrap());
         }
-
     }
     res
 }
@@ -134,13 +126,11 @@ fn count_all(game: &Game) -> HashMap<String, u32> {
     let mut res: HashMap<String, u32> = HashMap::new();
     for set in game.cube_sets.iter() {
         for (key, value) in set.iter() {
-
             if res.contains_key(key) {
                 res.insert(key.to_string(), value + res.get(key).unwrap());
             } else {
                 res.insert(key.to_string(), value.clone());
             }
-
         }
     }
     res
@@ -151,18 +141,15 @@ fn count_max(game: &Game) -> HashMap<String, u32> {
 
     for set in game.cube_sets.iter() {
         for (key, value) in set.iter() {
-
             if !res.contains_key(key) {
                 res.insert(key.to_string(), value.clone());
             } else if res.get(key).unwrap() < value {
                 res.insert(key.to_string(), value.clone());
-
             }
         }
     }
     res
 }
-
 
 fn get_color_count(input: &HashMap<String, u32>, color: String) -> u32 {
     let val: Option<&u32> = input.get(&color);
@@ -174,13 +161,13 @@ fn get_color_count(input: &HashMap<String, u32>, color: String) -> u32 {
     val.unwrap().clone()
 }
 
-fn print_set(set: &HashMap<String, u32>) {
+fn _print_set(set: &HashMap<String, u32>) {
     for (key, val) in set {
         println!("{}: {}", key, val);
     }
 }
 
-fn print_game(game: &Game) {
+fn _print_game(game: &Game) {
     println!("\n\nGame {}:", game.index);
 
     for set in game.cube_sets.iter() {
@@ -218,6 +205,4 @@ fn main() {
     println!("Impossible sum: {}", impossible_sum);
     println!("Possible sum: {}", possible_sum);
     println!("Power sum: {}", power_sum);
-
-
 }
