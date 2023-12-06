@@ -100,14 +100,18 @@ fn main() {
 
     cards_won.resize(winning.len(), 1);
 
+
+    let part1_start = std::time::Instant::now();
     for i in 0..winning.len() {
         pow_sum += calculate_pow(&winning[i], &numbers[i]);
     }
+    println!("Part 1: {} ({:?})", pow_sum, part1_start.elapsed());
 
+    let part2_start = std::time::Instant::now();
     for i in 0..winning.len() {
-        let won_count = calculate_result(&winning[i], &numbers[i]);
+        let won_count: u32 = calculate_result(&winning[i], &numbers[i]);
 
-        let lim = get_lim(i, won_count, winning.len());
+        let lim: usize = get_lim(i, won_count, winning.len());
 
         for j in i + 1..lim {
             cards_won[j] += cards_won[i];
@@ -117,6 +121,8 @@ fn main() {
     for i in 0..cards_won.len() {
         card_count += cards_won[i];
     }
+    println!("Part 2: {} ({:?})", card_count, part2_start.elapsed());
+
 
     println!("{}, {}", pow_sum, card_count);
 }
